@@ -1,11 +1,11 @@
-// Compile: g++ -std=c++11 -O3 rk.cpp -o rk!
+// Compile: g++ -std=c++11 -O3 rk.cc -o rk
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 
-#define NUM_OF_VAR 8
-#define NUM_OF_PARAM 7
+#define NUM_OF_VARS 8
+#define NUM_OF_PARAMS 7
 #define MAX_TIME 10.0
 
 void odeint(const std::vector<double>& k, std::vector<double>& x, const double& dt, std::fstream& results);
@@ -14,8 +14,8 @@ void dxdt(const std::vector<double>& k, const std::vector<double>& x, std::vecto
 int main(int argc, char* argv[]){
 	std::fstream parameters;
 	std::fstream results;
-	std::vector<double> x0(NUM_OF_VAR);
-	std::vector<double> k(NUM_OF_PARAM);
+	std::vector<double> x0(NUM_OF_VARS);
+	std::vector<double> k(NUM_OF_PARAMS);
 	double dt;
 
 	for (auto i = 1; i != argc; ++i){
@@ -50,11 +50,11 @@ int main(int argc, char* argv[]){
 
 void odeint(const std::vector<double>& k, std::vector<double>& x, const double& dt, std::fstream& results){
 	static std::vector<double> x1(x);	// Temporary variables for intermediate RK4 derivatives
-	static std::vector<double> d(NUM_OF_VAR);	// dx/dt
-	static std::vector<double> dx1(NUM_OF_VAR);	
-	static std::vector<double> dx2(NUM_OF_VAR);
-	static std::vector<double> dx3(NUM_OF_VAR);
-	static std::vector<double> dx4(NUM_OF_VAR);
+	static std::vector<double> d(NUM_OF_VARS);	// dx/dt
+	static std::vector<double> dx1(NUM_OF_VARS);	
+	static std::vector<double> dx2(NUM_OF_VARS);
+	static std::vector<double> dx3(NUM_OF_VARS);
+	static std::vector<double> dx4(NUM_OF_VARS);
 	double time = 0.0;
 	int counter = 0;
 
