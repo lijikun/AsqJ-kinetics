@@ -7,6 +7,7 @@
 #define NUM_OF_VARS 8
 #define NUM_OF_PARAMS 7
 #define MAX_TIME 10.0
+#define RECORD_EVERY 100
 
 void odeint(const std::vector<double>& k, std::vector<double>& x, const double& dt, std::fstream& results);
 void dxdt(const std::vector<double>& k, const std::vector<double>& x, std::vector<double>& d);
@@ -19,14 +20,14 @@ int main(int argc, char* argv[]){
 	double dt;
 
 	for (auto i = 1; i != argc; ++i){
-		// Reads in a file for parameters and values.
 		std::string paramFileName(argv[i]);
 		std::string resultsFileName;
 		resultsFileName = paramFileName + ".dat";
 		parameters.open(paramFileName, std::ios::in);
 		results.open(resultsFileName, std::ios::out);
 		if (parameters.is_open() && results.is_open()) {
-			std::cout << "Processing parameters file " << paramFileName << ", writing results file " << resultsFileName << "....\n";
+			std::cout << "Processing parameters file " << paramFileName 
+				<< ", writing results file " << resultsFileName << "....\n";
 			results << "# Time  Enzyme  aKG  subst  O2  ES  I  P\n";
 			for (auto&& param : k)
 				parameters >> param;
@@ -42,7 +43,7 @@ int main(int argc, char* argv[]){
 			results.close();
 		}
 		else 
-			std::cout << "Error processing file " << paramFileName << "\n";
+			std::cout << "Error processing files. \n";
 	}
 
 	return 0;
@@ -80,7 +81,7 @@ void odeint(const std::vector<double>& k, std::vector<double>& x, const double& 
 			dx4[i] = dt * d[i];
 			x[i] += ( dx1[i] / 6.0 + dx2[i] / 3.0 + dx3[i] / 3.0 + dx4[i] / 6.0 );
 		}
-		if (++ counter == 100){
+		if (++ counter == RECORD_EVERY){
 			results << time << '\t';
 			for (auto&& val : x)	
 				results << val << '\t';
