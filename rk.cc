@@ -36,7 +36,7 @@ int main(int argc, char* argv[]){
 			parameters >> dt;
 			parameters.close();
 			results << 0.0 << '\t';
-			for (auto&& initValue : x0)
+			for (const auto& initValue : x0)
 				results << initValue << '\t';
 			results << '\n';
 			odeint(k, x0, dt, results);
@@ -62,28 +62,28 @@ void odeint(const std::vector<double>& k, std::vector<double>& x, const double& 
 	while (time < MAX_TIME){
 		time += dt;
 		dxdt(k, x1, d);
-		for (int i = 0; i != NUM_OF_VAR; ++i){
+		for (int i = 0; i != NUM_OF_VARS; ++i){
 			dx1[i] = dt * d[i];
 			x1[i] = x[i] + dx1[i] / 2.0;
 		}
 		dxdt(k, x1, d);
-		for (int i = 0; i != NUM_OF_VAR; ++i){
+		for (int i = 0; i != NUM_OF_VARS; ++i){
 			dx2[i] = dt * d[i];
 			x1[i] = x[i] + dx2[i] / 2.0;
 		}
 		dxdt(k, x1, d);
-		for (int i = 0; i != NUM_OF_VAR; ++i){
+		for (int i = 0; i != NUM_OF_VARS; ++i){
 			dx3[i] = dt * d[i];
 			x1[i] = x[i] + dx3[i];
 		}
 		dxdt(k, x1, d);
-		for (int i = 0; i != NUM_OF_VAR; ++i){
+		for (int i = 0; i != NUM_OF_VARS; ++i){
 			dx4[i] = dt * d[i];
 			x[i] += ( dx1[i] / 6.0 + dx2[i] / 3.0 + dx3[i] / 3.0 + dx4[i] / 6.0 );
 		}
 		if (++ counter == RECORD_EVERY){
 			results << time << '\t';
-			for (auto&& val : x)	
+			for (const auto& val : x)	
 				results << val << '\t';
 			results << '\n';
 			counter = 0;
